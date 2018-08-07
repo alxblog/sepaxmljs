@@ -2,11 +2,16 @@
 Generate XML-SEPA credit transfert (SCT)
 
 ## Installation
+Via NPM
+
+```
+npm install --save sepaxmljs
+```
 
 ## Example
 ```javascript
   var XmlSEPA = require('sepaxmljs');
-  
+
   var sepa = new XmlSEPA({
     debitor:{
         name: "ACME Corp",
