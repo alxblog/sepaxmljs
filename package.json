@@ -1,6 +1,6 @@
 {
   "name": "sepaxmljs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generate XML-SEPA credit transfert (SCT)",
   "main": "index.js",
   "scripts": {

@@ -6,6 +6,7 @@ Generate XML-SEPA credit transfert (SCT)
 ## Example
 ```javascript
   var XmlSEPA = require('sepaxmljs');
+  
   var sepa = new XmlSEPA({
     debitor:{
         name: "ACME Corp",
