@@ -7,7 +7,7 @@ var sepa = new XmlSEPA({
          bic: "BNPAFRPPFAK"
      },
      msgId: "MyMessageID",
-     version: "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03"
+     version: "pain.001.001.03"
  });
  
  sepa.addPaymentInfo("Payment1")
