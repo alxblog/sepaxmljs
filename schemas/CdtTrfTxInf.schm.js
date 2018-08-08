@@ -16,6 +16,13 @@ const pruposeCodeValidation = function (val) {
 		return (purposeCodes.indexOf(val) > 0) ? true : false;
 	}
 }
+const chargeBearerValidation = function (val) { 
+	const liste = ["DEBT", "CRED", "SHAR", "SLEV"]         
+	if(typeof val == 'undefined') { return true }
+	else {
+		return (liste.indexOf(val) > 0) ? true : false;
+	}
+}
 
 const CdtTrfTxInfSchema = Schema({
 	PmtId: {
@@ -43,7 +50,7 @@ const CdtTrfTxInfSchema = Schema({
 	},
 	ChrgBr: {
 		type: String,
-		enum: ["DEBT", "CRED", "SHAR", "SLEV"]
+		validate: chargeBearerValidation
 	},
 	CdtrAgt: {
 		FinInstnId: {
@@ -93,60 +100,6 @@ const CdtTrfTxInfSchema = Schema({
 	}
 })
 
-// TO REMOVE
-
-const address = {
-
-	PmtId: {
-		EndToEndId: "EndToEndId"
-	},
-	Amt: {
-		InstdAmt: {
-			"@Ccy": "EUR",
-			"#text": 100
-		}
-	},
-	ChrgBr: "DEBT",
-	CdtrAgt: {
-		FinInstnId: {
-			BIC: "CUSTDEM0XXX" 
-		}
-	},
-	Cdtr: {
-		Nm: 'Example Customer',
-		PstlAdr: {
-			AdrLine: ["ligne1", "ligne2", "ligne3"]
-		}
-	},
-	CdtrAcct: {
-		Id: {
-			Othr: {
-				Id: ""
-			},
-			IBAN: "DE40987654329876543210"
-		}
-	},
-	Purp: {
-		Cd: "DEBN"
-	},
-	RmtInf: {
-		Strd: {
-			RfrdDocInf: {
-				Nb: ""
-			}
-		}
-	}
-
-
-}
-
-validate(address, CdtTrfTxInfSchema)
-  .then((parsedValues) => {
-    console.log('Yaay!', parsedValues)
-  })
-  .catch((errors) => {
-    console.log('Oops!', errors)
-  })
-
+module.exports = CdtTrfTxInfSchema
 
   
