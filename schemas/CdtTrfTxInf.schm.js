@@ -1,7 +1,21 @@
 const Schema = require('schm')
 const addressSchema = require('./Address.schema')
+const { validate } = Schema
 
+const bicValidation = function (val) {
+	return /[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}/.test(val)
+}
+const ibanValidation = function (val) {
+	return /[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}/.test(val)
+}
 
+const pruposeCodeValidation = function (val) { 
+	const purposeCodes = ["MSIN", "CNFA", "DNFA", "CINV", "CREN", "DEBN", "HIRI", "SBIN", "CMCN", "SOAC", "DISP", "BOLD", "VCHR", "AROI", "TSUT"]         
+	if(typeof val == 'undefined') { return true }
+	else {
+		return (purposeCodes.indexOf(val) > 0) ? true : false;
+	}
+}
 
 const CdtTrfTxInfSchema = Schema({
 	PmtId: {
@@ -34,7 +48,8 @@ const CdtTrfTxInfSchema = Schema({
 	CdtrAgt: {
 		FinInstnId: {
 			BIC: {
-				type: String, //TODO: REGEXP [A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}
+				type: String,
+				validate: bicValidation,
 				required: true
 			}
 		}
@@ -56,14 +71,15 @@ const CdtTrfTxInfSchema = Schema({
 				}
 			},
 			IBAN: {
-				type: String // TODO: [A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}
+				type: String,
+				validate: ibanValidation
 			}
 		}
 	},
 	Purp: {
 		Cd: {
 			type: String,
-			enum: ["MSIN", "CNFA", "DNFA", "CINV", "CREN", "DEBN", "HIRI", "SBIN", "CMCN", "SOAC", "DISP", "BOLD", "VCHR", "AROI", "TSUT"]
+			validate: pruposeCodeValidation
 		}
 
 	},
@@ -78,7 +94,8 @@ const CdtTrfTxInfSchema = Schema({
 })
 
 // TO REMOVE
-const address = CdtTrfTxInfSchema.parse({
+
+const address = {
 
 	PmtId: {
 		EndToEndId: "EndToEndId"
@@ -110,17 +127,26 @@ const address = CdtTrfTxInfSchema.parse({
 		}
 	},
 	Purp: {
-		Cd: ["MSIN", "CNFA", "DNFA", "CINV", "CREN", "DEBN", "HIRI", "SBIN", "CMCN", "SOAC", "DISP", "BOLD", "VCHR", "AROI", "TSUT"]
+		Cd: "DEBN"
 	},
 	RmtInf: {
 		Strd: {
 			RfrdDocInf: {
-				Nb: 125
+				Nb: ""
 			}
 		}
 	}
 
 
-})
+}
 
-console.log(address);
+validate(address, CdtTrfTxInfSchema)
+  .then((parsedValues) => {
+    console.log('Yaay!', parsedValues)
+  })
+  .catch((errors) => {
+    console.log('Oops!', errors)
+  })
+
+
+  
