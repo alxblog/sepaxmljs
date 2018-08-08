@@ -1,5 +1,5 @@
 const Schema = require('schm')
-const addressSchema = require('./Address.schema')
+const addressSchema = require('./AddressSchema')
 const { validate } = Schema
 
 const bicValidation = function (val) {
